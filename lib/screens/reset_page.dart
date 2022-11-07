@@ -30,6 +30,7 @@ class _ResetPageState extends State<ResetPage> {
           color: Color(0xff575656),
           onPressed: () {},
         ),
+
       ),
       body: SingleChildScrollView(
         child: Column(

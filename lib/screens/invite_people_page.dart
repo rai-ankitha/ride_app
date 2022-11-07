@@ -1,9 +1,11 @@
+
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:ride_app/screens/custom_padding.dart';
 
 import '../Providers/invite_provider.dart';
 
@@ -62,7 +64,7 @@ class _InvitePageState extends State<InvitePage> {
         appBar: AppBar(
           toolbarHeight: 80,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             color: Colors.white,
             onPressed: () {},
           ),
@@ -77,30 +79,31 @@ class _InvitePageState extends State<InvitePage> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding:  const EdgeInsets.only(left:20,right: 20, top: 30),
           child: Column(children: [
             Material(
-              elevation: 2.0,
-              shadowColor: Color.fromRGBO(194, 188, 188, 0.5),
+              elevation: 3.0,
+              shadowColor: const Color.fromRGBO(194, 188, 188, 0.5),
               child: TextField(
                 controller: searchController,
                 decoration: InputDecoration(
                   labelText: "Search Name",
                   labelStyle: GoogleFonts.roboto(
-                      color: Color.fromRGBO(166, 166, 166, 0.87), fontSize: 14),
+                      color: const Color.fromRGBO(166, 166, 166, 0.87), fontSize: 14),
                   fillColor: Colors.white,
                   filled: true,
-                  contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  focusedBorder: UnderlineInputBorder(
+                  contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  focusedBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(
                           color: Color.fromRGBO(194, 188, 188, 0.5))),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(color: Colors.white, width: 4.0)),
-                  prefixIcon: Icon(Icons.search),
+                      borderSide: const BorderSide(color: Colors.white, width: 4.0)),
+                  prefixIcon: const Icon(Icons.search),
                 ),
               ),
             ),
+            const SizedBox(height: 30,),
             Expanded(
                 child: ListView.builder(
                     shrinkWrap: true,
@@ -112,18 +115,19 @@ class _InvitePageState extends State<InvitePage> {
                           ? contactsFiltered[index]
                           : contacts[index];
                       return ListTile(
-                          title: Text(contact.displayName.toString()),
+                          title: Text(contact.displayName.toString(),textAlign:TextAlign.left,style: GoogleFonts.roboto(fontSize:15,color:Color.fromRGBO(0, 0, 0, 0.87)),),
                           //subtitle: Text((contact.phones?.elementAt(0).value).toString()),
                           leading: ((contact.avatar != null) &&
                                   (contact.avatar!.isNotEmpty))
-                              ? CircleAvatar(
+                              ?  CircleAvatar(
+                            //backgroundColor: Color.fromRGBO(0, 0, 0, 0.38),
                                   backgroundImage: MemoryImage(contact.avatar!),
                                 )
                               : CircleAvatar(
+                            backgroundColor: Color.fromRGBO(0, 0, 0, 0.38),
                                   child: Text(contact.initials()),
                                 ),
                           trailing: InkWell(onTap: () {
-
                             print(contact.avatar.runtimeType);
                             Provider.of<InviteProvider>(context, listen: false)
                                 .toggleContact(contact.displayName.toString(),(contact.phones?.elementAt(0).value).toString());
@@ -141,7 +145,7 @@ class _InvitePageState extends State<InvitePage> {
                                     width: 30,
                                   );
                           })));
-                    }))
+                    }).paddingAll(60,0,0,0))
           ]),
         ));
   }

@@ -4,7 +4,7 @@ import '../constants.dart';
 
 class LargeSubmitButton extends StatefulWidget {
   String text;
-  Function ontap;
+  Function? ontap;
   LargeSubmitButton({required this.text, required this.ontap});
 
   @override
@@ -15,7 +15,7 @@ class _LargeSubmitButtonState extends State<LargeSubmitButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => widget.ontap(),
+      onTap: () => widget.ontap,
       child: Container(
         height: 45,
         width: 282,
