@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ride_app/model/book_service_model.dart';
 import 'package:ride_app/screens/custom_padding.dart';
 
 import '../constants.dart';
@@ -14,10 +15,11 @@ class ServiceBooking extends StatefulWidget {
 }
 
 class _ServiceBookingState extends State<ServiceBooking> {
+  TextEditingController mobileNo=TextEditingController();
   final vehicleTypeController = TextEditingController();
   final vehicleNumberController = TextEditingController();
   final commentsController = TextEditingController();
-  String? _sectorController;
+  String? serviceController;
   bool submit = false;
   bool vehicleType = false;
   bool vehicleNumber = false;
@@ -69,7 +71,9 @@ class _ServiceBookingState extends State<ServiceBooking> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         backgroundColor: const Color(0xFFED863A),
         centerTitle: true,
@@ -86,6 +90,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              controller: mobileNo,
               decoration: InputDecoration(
                 labelText: 'Mobile number',
                 focusedBorder: const UnderlineInputBorder(
@@ -129,7 +134,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
             ),
 
             DropDownTextField(
-              controller: _sectorController,
+              controller: serviceController,
               clearOption: true,
               enableSearch: true,
               clearIconProperty: IconProperty(color: Colors.grey),
@@ -246,8 +251,15 @@ class _ServiceBookingState extends State<ServiceBooking> {
       ).paddingAll(40, 40, 20, 30),
     );
   }
+
+  submitData() {
+    BookServiceModel.mobileNumber= mobileNo.text;
+    BookServiceModel.vehicleType=vehicleTypeController.text;
+    BookServiceModel.vehicleNumber=vehicleNumberController.text;
+    BookServiceModel.serviceType=serviceController.toString();
+    BookServiceModel.comments=commentsController.text;
+
+  }
+
 }
 
-submitData() {
-  // Do something here
-}

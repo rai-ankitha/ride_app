@@ -28,19 +28,6 @@ class _AppNavigationState extends State<AppNavigation> {
     return Scaffold(
       body: _pageOptions[bottomIndex],
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        elevation: 0,
-        focusElevation: 0,
-        disabledElevation: 0,
-        splashColor: Colors.transparent,
-        onPressed: () {},
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        child: Image.asset(
-          "assets/add_tripIcon.png",
-          width: double.infinity,
-        ),
-      ),
       bottomNavigationBar: Container(
           height: 65,
           width: double.infinity,
