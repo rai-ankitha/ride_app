@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ride_app/model/book_service_model.dart';
 import 'package:ride_app/screens/custom_padding.dart';
+import 'package:ride_app/screens/workstation_suggestion.dart';
 
 import '../constants.dart';
 import '../widgets/large_submit_button.dart';
@@ -258,7 +259,11 @@ class _ServiceBookingState extends State<ServiceBooking> {
     BookServiceModel.vehicleNumber=vehicleNumberController.text;
     BookServiceModel.serviceType=serviceController.toString();
     BookServiceModel.comments=commentsController.text;
-
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                WorkstationSuggestion ()));
   }
 
 }

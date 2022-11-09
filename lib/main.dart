@@ -6,6 +6,7 @@ import 'package:ride_app/screens/invite_people_page.dart';
 import 'package:ride_app/screens/reset_page.dart';
 import 'package:ride_app/screens/search_destination.dart';
 import 'package:ride_app/screens/success_page.dart';
+import 'package:ride_app/screens/timeline.dart';
 import 'package:ride_app/screens/trip_home.dart';
 import 'package:ride_app/screens/trip_navigation.dart';
 
