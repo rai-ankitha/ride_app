@@ -22,7 +22,7 @@ class _ServiceRecordsState extends State<ServiceRecords> {
   List<String> bikeCategories = [
     "Classic 350-Black",
     "Interceptor 650-Black",
-    "Bullet 350-Black",
+    "Hunter 350-Black",
     "Thunderbird 350-Black"
   ];
   List<String> categories = [

@@ -204,6 +204,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
               width: double.infinity,
               child: TextField(
                 controller: commentsController,
+                textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey)),
@@ -259,6 +260,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
     BookServiceModel.vehicleNumber=vehicleNumberController.text;
     BookServiceModel.serviceType=serviceController.toString();
     BookServiceModel.comments=commentsController.text;
+
     Navigator.push(
         context,
         MaterialPageRoute(
