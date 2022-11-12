@@ -17,23 +17,15 @@ class ServiceBooking extends StatefulWidget {
 }
 
 class _ServiceBookingState extends State<ServiceBooking> {
-  TextEditingController mobileNumberController  = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
   TextEditingController vehicleNumberController = TextEditingController();
   TextEditingController commentsController = TextEditingController();
   String _serviceType = 'General Service';
-  TextEditingController vehicleTypeTextfield=TextEditingController();
-  // vehicleTypeTextfield.text=widget.prefill.prefill;
-
+  TextEditingController vehicleTypeTextfield = TextEditingController();
   String vehicleType = 'Classic 350-black';
-
-  // List<String> vehicleList = [
-  //   "classic 350-black",
-  //   "Hunter 350",
-  //   "Thunder Bird"
-  // ];
-  bool textFieldDropdown=false;
+  bool textFieldDropdown = false;
   bool submit = false;
-  bool vehicleNumber = false;
+  bool isServiceFilled = true;
   bool comments = false;
   List<String> categories = [
     "Free service",
@@ -45,14 +37,14 @@ class _ServiceBookingState extends State<ServiceBooking> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    textFieldDropdown=widget.prefill.prefill.length>1?true:false;
-    if(!textFieldDropdown){
-      vehicleTypeTextfield.text=widget.prefill.prefill[0].vehicleName!;
-      vehicleNumberController.text=widget.prefill.prefill[0].vehicleNumber!;
-      vehicleType=vehicleTypeTextfield.text;
+    textFieldDropdown = widget.prefill.prefill.length > 1 ? true : false;
+    if (!textFieldDropdown) {
+      vehicleTypeTextfield.text = widget.prefill.prefill[0].vehicleName!;
+      vehicleNumberController.text = widget.prefill.prefill[0].vehicleNumber!;
+      vehicleType = vehicleTypeTextfield.text;
     }
     print(widget.prefill.mobile!);
-    mobileNumberController .text = widget.prefill.mobile!;
+    mobileNumberController.text = widget.prefill.mobile!;
     // vehicleNumberController.addListener(() {
     //   setState(() {
     //     vehicleNumber = vehicleNumberController.text.isNotEmpty;
@@ -63,7 +55,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
     commentsController.addListener(() {
       setState(() {
         comments = commentsController.text.isNotEmpty;
-        submit =comments;
+        submit = comments;
       });
     });
   }
@@ -102,7 +94,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
           children: [
             TextField(
               enabled: false,
-              controller: mobileNumberController ,
+              controller: mobileNumberController,
               decoration: InputDecoration(
                 labelText: 'Mobile number',
                 focusedBorder: const UnderlineInputBorder(
@@ -118,58 +110,57 @@ class _ServiceBookingState extends State<ServiceBooking> {
             const SizedBox(
               height: 10,
             ),
-            textFieldDropdown?
-            DropdownButtonFormField(
-              icon: Image.asset("assets/drop_down.png", width: 10),
-              decoration: InputDecoration(
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)),
-                labelText: 'Select vehicle',
-                labelStyle: GoogleFonts.roboto(
-                    color: const Color(0xff9F9F9F), fontSize: 18),
-              ),
-              items: [
-                ...widget.prefill.prefill.map(
-                  (VehicleDetails item) =>
-                      DropdownMenuItem<String>(
-                    value: item.vehicleName,
-                    child: Text(
-                      item.vehicleName!,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.black87,
+            textFieldDropdown
+                ? DropdownButtonFormField(
+                    icon: Image.asset("assets/drop_down.png", width: 10),
+                    decoration: InputDecoration(
+                      focusedBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey)),
+                      labelText: 'Select vehicle',
+                      labelStyle: GoogleFonts.roboto(
+                          color: const Color(0xff9F9F9F), fontSize: 18),
+                    ),
+                    items: [
+                      ...widget.prefill.prefill.map(
+                        (VehicleDetails item) => DropdownMenuItem<String>(
+                          value: item.vehicleName,
+                          child: Text(
+                            item.vehicleName!,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
                       ),
+                    ],
+                    // value: vehicleType,
+                    onChanged: (value) {
+                      print(value);
+                      vehicleType = value!;
+                      setState(() {
+                        vehicleNumberController.text = widget.prefill.prefill
+                            .where((element) => element.vehicleName == value)
+                            .toList()[0]
+                            .vehicleNumber!;
+                        // vehicleType = value as String;
+                        // vehicleNumberController.text=value;
+                      });
+                      print("vehicle type is ${value}");
+                    },
+                    itemHeight: 50,
+                  )
+                : TextField(
+                    enabled: false,
+                    controller: vehicleTypeTextfield,
+                    decoration: InputDecoration(
+                      labelText: 'Vehicle type',
+                      focusedBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey)),
+                      labelStyle: GoogleFonts.robotoFlex(
+                          color: Color(0xff9F9F9F), fontSize: 18),
                     ),
                   ),
-                ),
-              ],
-              // value: vehicleType,
-              onChanged: (value) {
-                print(value);
-                vehicleType=value!;
-                setState(() {
-                  vehicleNumberController.text = widget.prefill.prefill
-                      .where((element) => element.vehicleName == value)
-                      .toList()[0]
-                      .vehicleNumber!;
-                  // vehicleType = value as String;
-                  // vehicleNumberController.text=value;
-                });
-                print("vehicle type is ${value}");
-              },
-              itemHeight: 50,
-            ):
-            TextField(
-              enabled: false,
-              controller: vehicleTypeTextfield,
-              decoration: InputDecoration(
-                labelText: 'Vehicle type',
-                focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)),
-                labelStyle: GoogleFonts.robotoFlex(
-                    color: Color(0xff9F9F9F), fontSize: 18),
-              ),
-            ),
             const SizedBox(
               height: 10,
             ),
@@ -187,32 +178,61 @@ class _ServiceBookingState extends State<ServiceBooking> {
             const SizedBox(
               height: 10,
             ),
-
-            DropDownTextField(
-              clearOption: true,
-              // enableSearch: true,
-              clearIconProperty: IconProperty(color: Colors.grey),
-              searchDecoration: const InputDecoration(hintText: "Service type"),
-              validator: (value) {
-                if (value == null) {
-                  return "Required field";
-                } else {
-                  return null;
-                }
+            DropdownButtonFormField(
+              icon: Image.asset("assets/drop_down.png", width: 10),
+              decoration: InputDecoration(
+                focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey)),
+                labelText: 'Service Type',
+                labelStyle: GoogleFonts.roboto(
+                    color: const Color(0xff9F9F9F), fontSize: 18),
+              ),
+              items: categories
+                  .map(
+                    (item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: const TextStyle(
+                            fontSize: 18, color: Colors.black87),
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  _serviceType = value as String;
+                _serviceType.isNotEmpty? isServiceFilled=true:false;
+                 print("service filled ${isServiceFilled}");
+                });
               },
-              dropDownItemCount: 3,
-              dropDownList: const [
-                DropDownValueModel(name: 'Free Service', value: "Free Service"),
-                DropDownValueModel(
-                    name: 'General Service', value: "General Service"),
-                DropDownValueModel(
-                    name: 'Breakdown assistance',
-                    value: "Breakdown assistance"),
-              ],
-              onChanged: (val) {
-                _serviceType = (val as DropDownValueModel).value;
-              },
+              itemHeight: 50,
             ),
+            // DropDownTextField(
+            //   clearOption: true,
+            //   // enableSearch: true,
+            //   clearIconProperty: IconProperty(color: Colors.grey),
+            //   searchDecoration: const InputDecoration(hintText: "Service type"),
+            //   validator: (value) {
+            //     if (value == null) {
+            //       return "Required field";
+            //     } else {
+            //       return null;
+            //     }
+            //   },
+            //   dropDownItemCount: 3,
+            //   dropDownList: const [
+            //     DropDownValueModel(name: 'Free Service', value: "Free Service"),
+            //     DropDownValueModel(
+            //         name: 'General Service', value: "General Service"),
+            //     DropDownValueModel(
+            //         name: 'Breakdown assistance',
+            //         value: "Breakdown assistance"),
+            //   ],
+            //   onChanged: (val) {
+            //     _serviceType = (val as DropDownValueModel).value;
+            //   },
+            // ),
             const SizedBox(
               height: 30,
             ),
@@ -265,7 +285,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
                     backgroundColor:
                         MaterialStateProperty.all(Colors.transparent),
                     elevation: MaterialStateProperty.all(0)),
-                onPressed: submit ? () => submitData() : null,
+                onPressed: submit? () => submitData() : null,
                 child: Text(
                   "FIND A DEALER",
                   style: kLargeSubmitButtonTextDecoration,
