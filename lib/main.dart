@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ride_app/screens/book_service.dart';
+import 'package:ride_app/screens/book_service/book_service.dart';
 import 'package:ride_app/screens/google_map.dart';
 import 'package:ride_app/screens/invite_people_page.dart';
 import 'package:ride_app/screens/reset_page.dart';

@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ride_app/model/workstation_model.dart';
 import 'package:ride_app/screens/custom_padding.dart';
+import 'package:ride_app/screens/book_service/workstation_details_screen.dart';
 
-import '../service/http.dart';
-import '../widgets/workstation_card.dart';
+import '../../service/http.dart';
+import '../../widgets/workstation_card.dart';
 
 class WorkstationSuggestion extends StatefulWidget {
   const WorkstationSuggestion({Key? key}) : super(key: key);
@@ -30,11 +31,10 @@ class _WorkstationSuggestionState extends State<WorkstationSuggestion> {
               enabled: true,
               controller: workstationController,
               onChanged: (value) {
+                print(value);
                 if (value.isEmpty) {
                   workstations.clear();
-                  setState(() {
-
-                  });
+                  setState(() {});
                 } else {
                   UserHttp.getWorkstations(workstationController.text)
                       .then((value) {
@@ -42,7 +42,6 @@ class _WorkstationSuggestionState extends State<WorkstationSuggestion> {
 
                     for (var e in value) {
                       workstations.add(WorkstationModel.fromJson(e));
-
                     }
 
                     setState(() {});
@@ -78,11 +77,9 @@ class _WorkstationSuggestionState extends State<WorkstationSuggestion> {
               height: 20,
             ),
             ...workstations.map((e) {
-
-             return  ServiceCard(
-                  workstation: e,
-
-             );
+              return ServiceCard(
+                workstation: e,
+              );
             })
           ],
         ),

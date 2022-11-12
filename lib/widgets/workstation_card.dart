@@ -1,40 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ride_app/model/book_service_model.dart';
 import 'package:ride_app/model/workstation_model.dart';
 
-
 import '../constants.dart';
+import '../screens/book_service/workstation_details_screen.dart';
+import '../service/http.dart';
 
 class ServiceCard extends StatefulWidget {
-
-  ServiceCard({required this.workstation,Key? key}) : super(key: key);
+  ServiceCard({required this.workstation, Key? key}) : super(key: key);
   late final WorkstationModel workstation;
+
   @override
   State<ServiceCard> createState() => _ServiceCardState();
 }
 
 class _ServiceCardState extends State<ServiceCard> {
   IconData? _selectedIcon;
-
+  // final WorkstationModel dealerDetailsList;
   bool _isVertical = false;
-
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(onTap: (){
-      // UserHttp.getWorkstations(workstationController.text)
-      //     .then((value) {
-      //   workstations.clear();
-      //
-      //   for (var e in value) {
-      //     workstations.add(WorkstationModel.fromJson(e));
-      //
-      //   }
-      //
-      //   setState(() {});
-      // });
-    },
+    return GestureDetector(
+      onTap: () {
+//       UserHttp.getWorkstationDetails(widget.workstation.dealerPhoneNumber!)
+//           .then((value) {
+// print(value);
+// dealerDetailsList.(WorkstationModel(id: value["_id"], dealerName: value["dealerName"], dealerCity: value["dealerCity"], dealerDescription: value["dealerDescription"], dealerPhoneNumber: value["dealerPhoneNumber"], dealerRating: value["dealerRating"], dealerImage: value["dealerImage"]));
+        BookServiceModel.dealerName = widget.workstation.dealerName!;
+        BookServiceModel.dealerCity = widget.workstation.dealerCity!;
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DealerDetails(
+                      dealerDetailsList: widget.workstation,
+                    )));
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
         padding: EdgeInsets.only(right: 20, left: 20, top: 20),
@@ -62,17 +65,19 @@ class _ServiceCardState extends State<ServiceCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-              widget.workstation.dealerName!,
+                  widget.workstation.dealerName!,
                   style: TextStyle(color: Color(0xcfED7E2B), fontSize: 19),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                Text(widget.workstation.dealerDescription!, style: kServiceCardTextStyle),
+                Text(widget.workstation.dealerDescription!,
+                    style: kServiceCardTextStyle),
                 const SizedBox(
                   height: 5,
                 ),
-                Text(widget.workstation.dealerPhoneNumber!, style: kServiceCardTextStyle),
+                Text(widget.workstation.dealerPhoneNumber!,
+                    style: kServiceCardTextStyle),
                 const SizedBox(
                   height: 5,
                 ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ride_app/screens/book_service.dart';
+import 'package:ride_app/screens/book_service/book_service.dart';
 import 'package:ride_app/screens/custom_padding.dart';
 import 'package:ride_app/screens/owners_manual.dart';
 import 'package:ride_app/screens/service_record.dart';
+import 'package:ride_app/service/http.dart';
 
 class MyGarage extends StatefulWidget {
   MyGarage({Key? key}) : super(key: key);
@@ -48,9 +49,23 @@ class _MyGarageState extends State<MyGarage> {
                 "assets/garage_images/indicator.png",
               ),
             ).paddingAll(20, 20, 0, 0),
-            InkWell(onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceBooking()));
-            },
+            InkWell(
+              onTap: () {
+                UserHttp.prefillDetails().then(
+                  (value) {
+                    if (value.prefill.isEmpty) {
+                      print('Please add your bike');
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ServiceBooking(prefill:value),
+                        ),
+                      );
+                    }
+                  },
+                );
+              },
               child: Row(
                 children: [
                   Image.asset(
@@ -75,9 +90,11 @@ class _MyGarageState extends State<MyGarage> {
               color: Color(0xff979797),
               thickness: 0.5,
             ),
-            InkWell(onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceRecords()));
-            },
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ServiceRecords()));
+              },
               child: Row(
                 children: [
                   Image.asset("assets/garage_images/service_records.png",
@@ -100,9 +117,11 @@ class _MyGarageState extends State<MyGarage> {
               color: Color(0xff979797),
               thickness: 0.5,
             ),
-            InkWell(onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => OwnersManual()));
-            },
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => OwnersManual()));
+              },
               child: Row(
                 children: [
                   Image.asset("assets/garage_images/owners_manual.png",
@@ -125,7 +144,8 @@ class _MyGarageState extends State<MyGarage> {
               color: Color(0xff979797),
               thickness: 0.5,
             ),
-            InkWell(onTap: (){},
+            InkWell(
+              onTap: () {},
               child: Row(
                 children: [
                   Image.asset("assets/garage_images/tool_kit.png", width: 30),
@@ -147,7 +167,8 @@ class _MyGarageState extends State<MyGarage> {
               color: Color(0xff979797),
               thickness: 0.5,
             ),
-            InkWell(onTap: (){},
+            InkWell(
+              onTap: () {},
               child: Row(
                 children: [
                   Image.asset("assets/garage_images/accessories.png",

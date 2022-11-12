@@ -3,26 +3,33 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ride_app/model/book_service_model.dart';
+import 'package:ride_app/model/prefill_model.dart';
 import 'package:ride_app/screens/custom_padding.dart';
-import 'package:ride_app/screens/workstation_suggestion.dart';
-
-import '../constants.dart';
-import '../widgets/large_submit_button.dart';
+import 'package:ride_app/screens/book_service/workstation_suggestion.dart';
+import '../../constants.dart';
 
 class ServiceBooking extends StatefulWidget {
-  const ServiceBooking({Key? key}) : super(key: key);
+  ServiceBooking({Key? key, required this.prefill}) : super(key: key);
+  final PrefillModel prefill;
+
   @override
   State<ServiceBooking> createState() => _ServiceBookingState();
 }
 
 class _ServiceBookingState extends State<ServiceBooking> {
-  TextEditingController mobileNo=TextEditingController();
-  final vehicleTypeController = TextEditingController();
-  final vehicleNumberController = TextEditingController();
-  final commentsController = TextEditingController();
-  String? serviceController;
+  TextEditingController mobileNumberController  = TextEditingController();
+  TextEditingController vehicleNumberController = TextEditingController();
+  TextEditingController commentsController = TextEditingController();
+  String _serviceType = 'General Service';
+
+  // String vehicleType = 'Classic 350-black';
+
+  // List<String> vehicleList = [
+  //   "classic 350-black",
+  //   "Hunter 350",
+  //   "Thunder Bird"
+  // ];
   bool submit = false;
-  bool vehicleType = false;
   bool vehicleNumber = false;
   bool comments = false;
   List<String> categories = [
@@ -35,23 +42,19 @@ class _ServiceBookingState extends State<ServiceBooking> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    vehicleTypeController.addListener(() {
-      setState(() {
-        vehicleType = vehicleTypeController.text.isNotEmpty;
-        submit = vehicleType && vehicleNumber && comments;
-      });
-    });
+    print(widget.prefill.mobile!);
+    mobileNumberController .text = widget.prefill.mobile!;
     vehicleNumberController.addListener(() {
       setState(() {
         vehicleNumber = vehicleNumberController.text.isNotEmpty;
-        submit = vehicleType && vehicleNumber && comments ;
+        submit = vehicleNumber && comments;
       });
     });
 
     commentsController.addListener(() {
       setState(() {
         comments = commentsController.text.isNotEmpty;
-        submit = vehicleType && vehicleNumber && comments;
+        submit = vehicleNumber && comments;
       });
     });
   }
@@ -59,8 +62,6 @@ class _ServiceBookingState extends State<ServiceBooking> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    vehicleTypeController.dispose();
-    vehicleNumberController.dispose();
     super.dispose();
   }
 
@@ -91,13 +92,14 @@ class _ServiceBookingState extends State<ServiceBooking> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              controller: mobileNo,
+              enabled: false,
+              controller: mobileNumberController ,
               decoration: InputDecoration(
                 labelText: 'Mobile number',
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 labelStyle: GoogleFonts.robotoFlex(
-                    color: Color(0xff9F9F9F), fontSize: 18),
+                    color: const Color(0xff9F9F9F), fontSize: 18),
                 suffixIcon: const Icon(
                   Icons.edit,
                   color: Color(0xffA6A4A3),
@@ -107,20 +109,59 @@ class _ServiceBookingState extends State<ServiceBooking> {
             const SizedBox(
               height: 10,
             ),
-            TextField(
-              controller: vehicleTypeController,
+            DropdownButtonFormField(
+              icon: Image.asset("assets/drop_down.png", width: 10),
               decoration: InputDecoration(
-                labelText: 'Vehicle type',
                 focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
-                labelStyle: GoogleFonts.robotoFlex(
-                    color: Color(0xff9F9F9F), fontSize: 18),
+                labelText: 'Select vehicle',
+                labelStyle: GoogleFonts.roboto(
+                    color: const Color(0xff9F9F9F), fontSize: 18),
               ),
+              items: [
+                ...widget.prefill.prefill.map(
+                  (VehicleDetails item) =>
+                      DropdownMenuItem<String>(
+                    value: item.vehicleName,
+                    child: Text(
+                      item.vehicleName!,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              // value: vehicleType,
+              onChanged: (value) {
+                setState(() {
+                  vehicleNumberController.text = widget.prefill.prefill
+                      .where((element) => element.vehicleName == value)
+                      .toList()[0]
+                      .vehicleNumber!;
+                  // vehicleType = value as String;
+                  // vehicleNumberController.text=value;
+                });
+                print(value);
+              },
+              itemHeight: 50,
             ),
+            // TextField(
+            //   controller: vehicleTypeController,
+            //   decoration: InputDecoration(
+            //     labelText: 'Vehicle type',
+            //     focusedBorder: const UnderlineInputBorder(
+            //         borderSide: BorderSide(color: Colors.grey)),
+            //     labelStyle: GoogleFonts.robotoFlex(
+            //         color: Color(0xff9F9F9F), fontSize: 18),
+            //   ),
+            // ),
             const SizedBox(
               height: 10,
             ),
             TextField(
+              enabled: false,
               controller: vehicleNumberController,
               decoration: InputDecoration(
                 labelText: 'Vehicle number',
@@ -135,9 +176,8 @@ class _ServiceBookingState extends State<ServiceBooking> {
             ),
 
             DropDownTextField(
-              controller: serviceController,
               clearOption: true,
-              enableSearch: true,
+              // enableSearch: true,
               clearIconProperty: IconProperty(color: Colors.grey),
               searchDecoration: const InputDecoration(hintText: "Service type"),
               validator: (value) {
@@ -149,46 +189,17 @@ class _ServiceBookingState extends State<ServiceBooking> {
               },
               dropDownItemCount: 3,
               dropDownList: const [
-                DropDownValueModel(name: 'Free service', value: "value1"),
-                DropDownValueModel(name: 'General service', value: "value2"),
+                DropDownValueModel(name: 'Free Service', value: "Free Service"),
                 DropDownValueModel(
-                    name: 'Breakdown assistance', value: "value3"),
+                    name: 'General Service', value: "General Service"),
+                DropDownValueModel(
+                    name: 'Breakdown assistance',
+                    value: "Breakdown assistance"),
               ],
-              onChanged: (val) {},
+              onChanged: (val) {
+                _serviceType = (val as DropDownValueModel).value;
+              },
             ),
-            // SizedBox(width: double.infinity,
-            //   child: DropdownButton2(
-            //     icon: Image.asset("assets/drop_down.png",width: 10),
-            //     hint: Text(
-            //       'Service type',
-            //       style: TextStyle(
-            //         fontSize: 14,
-            //         color: Colors.black26,
-            //       ),
-            //     ),
-            //     items: categories
-            //         .map(
-            //           (item) => DropdownMenuItem<String>(
-            //         value: item,
-            //         child: Text(
-            //           item,
-            //           style: const TextStyle(
-            //               fontSize: 18, color: Colors.black54),
-            //         ),
-            //       ),
-            //     )
-            //         .toList(),
-            //     value: _sectorController,
-            //     onChanged: (value) {
-            //       setState(() {
-            //         _sectorController = value as String;
-            //       });
-            //     },
-            //     buttonHeight: 60,
-            //     buttonWidth: 200,
-            //     itemHeight: 40,
-            //   ),
-            // ),
             const SizedBox(
               height: 30,
             ),
@@ -255,18 +266,13 @@ class _ServiceBookingState extends State<ServiceBooking> {
   }
 
   submitData() {
-    BookServiceModel.mobileNumber= mobileNo.text;
-    BookServiceModel.vehicleType=vehicleTypeController.text;
-    BookServiceModel.vehicleNumber=vehicleNumberController.text;
-    BookServiceModel.serviceType=serviceController.toString();
-    BookServiceModel.comments=commentsController.text;
+    BookServiceModel.mobileNumber = mobileNumberController.text;
+    // BookServiceModel.vehicleType = vehicleType;
+    BookServiceModel.vehicleNumber = vehicleNumberController.text;
+    BookServiceModel.serviceType = _serviceType;
+    BookServiceModel.comments = commentsController.text;
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                WorkstationSuggestion ()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => WorkstationSuggestion()));
   }
-
 }
-
