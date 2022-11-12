@@ -21,14 +21,17 @@ class _ServiceBookingState extends State<ServiceBooking> {
   TextEditingController vehicleNumberController = TextEditingController();
   TextEditingController commentsController = TextEditingController();
   String _serviceType = 'General Service';
+  TextEditingController vehicleTypeTextfield=TextEditingController();
+  // vehicleTypeTextfield.text=widget.prefill.prefill;
 
-  // String vehicleType = 'Classic 350-black';
+  String vehicleType = 'Classic 350-black';
 
   // List<String> vehicleList = [
   //   "classic 350-black",
   //   "Hunter 350",
   //   "Thunder Bird"
   // ];
+  bool textFieldDropdown=false;
   bool submit = false;
   bool vehicleNumber = false;
   bool comments = false;
@@ -42,19 +45,25 @@ class _ServiceBookingState extends State<ServiceBooking> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    textFieldDropdown=widget.prefill.prefill.length>1?true:false;
+    if(!textFieldDropdown){
+      vehicleTypeTextfield.text=widget.prefill.prefill[0].vehicleName!;
+      vehicleNumberController.text=widget.prefill.prefill[0].vehicleNumber!;
+      vehicleType=vehicleTypeTextfield.text;
+    }
     print(widget.prefill.mobile!);
     mobileNumberController .text = widget.prefill.mobile!;
-    vehicleNumberController.addListener(() {
-      setState(() {
-        vehicleNumber = vehicleNumberController.text.isNotEmpty;
-        submit = vehicleNumber && comments;
-      });
-    });
+    // vehicleNumberController.addListener(() {
+    //   setState(() {
+    //     vehicleNumber = vehicleNumberController.text.isNotEmpty;
+    //     submit = vehicleNumber && comments;
+    //   });
+    // });
 
     commentsController.addListener(() {
       setState(() {
         comments = commentsController.text.isNotEmpty;
-        submit = vehicleNumber && comments;
+        submit =comments;
       });
     });
   }
@@ -109,6 +118,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
             const SizedBox(
               height: 10,
             ),
+            textFieldDropdown?
             DropdownButtonFormField(
               icon: Image.asset("assets/drop_down.png", width: 10),
               decoration: InputDecoration(
@@ -135,6 +145,8 @@ class _ServiceBookingState extends State<ServiceBooking> {
               ],
               // value: vehicleType,
               onChanged: (value) {
+                print(value);
+                vehicleType=value!;
                 setState(() {
                   vehicleNumberController.text = widget.prefill.prefill
                       .where((element) => element.vehicleName == value)
@@ -143,20 +155,21 @@ class _ServiceBookingState extends State<ServiceBooking> {
                   // vehicleType = value as String;
                   // vehicleNumberController.text=value;
                 });
-                print(value);
+                print("vehicle type is ${value}");
               },
               itemHeight: 50,
+            ):
+            TextField(
+              enabled: false,
+              controller: vehicleTypeTextfield,
+              decoration: InputDecoration(
+                labelText: 'Vehicle type',
+                focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey)),
+                labelStyle: GoogleFonts.robotoFlex(
+                    color: Color(0xff9F9F9F), fontSize: 18),
+              ),
             ),
-            // TextField(
-            //   controller: vehicleTypeController,
-            //   decoration: InputDecoration(
-            //     labelText: 'Vehicle type',
-            //     focusedBorder: const UnderlineInputBorder(
-            //         borderSide: BorderSide(color: Colors.grey)),
-            //     labelStyle: GoogleFonts.robotoFlex(
-            //         color: Color(0xff9F9F9F), fontSize: 18),
-            //   ),
-            // ),
             const SizedBox(
               height: 10,
             ),
@@ -267,7 +280,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
 
   submitData() {
     BookServiceModel.mobileNumber = mobileNumberController.text;
-    // BookServiceModel.vehicleType = vehicleType;
+    BookServiceModel.vehicleType = vehicleType;
     BookServiceModel.vehicleNumber = vehicleNumberController.text;
     BookServiceModel.serviceType = _serviceType;
     BookServiceModel.comments = commentsController.text;
