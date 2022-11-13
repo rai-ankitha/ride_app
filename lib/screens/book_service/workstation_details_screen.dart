@@ -19,7 +19,7 @@ class DealerDetails extends StatefulWidget {
 class _DealerDetailsState extends State<DealerDetails> {
   @override
   IconData? _selectedIcon;
-  bool _isVertical = false;
+  final bool _isVertical = false;
   TextEditingController dateInput = TextEditingController();
 
   @override
@@ -44,7 +44,7 @@ class _DealerDetailsState extends State<DealerDetails> {
             ),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Stack(
                 children: [
                   Positioned(
@@ -69,7 +69,7 @@ class _DealerDetailsState extends State<DealerDetails> {
                         direction:
                             _isVertical ? Axis.vertical : Axis.horizontal,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Text(
                         widget.dealerDetailsList.dealerName!,
                         style: GoogleFonts.roboto(
@@ -80,7 +80,7 @@ class _DealerDetailsState extends State<DealerDetails> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Container(
+                      SizedBox(
                         width: 300,
                         child: Text(
                           widget.dealerDetailsList.dealerAddress!,
@@ -102,12 +102,12 @@ class _DealerDetailsState extends State<DealerDetails> {
                       Text(
                         widget.dealerDetailsList.dealerPhoneNumber!,
                         style: GoogleFonts.roboto(
-                            color: Color(0x99000000), fontSize: 14),
+                            color: const Color(0x99000000), fontSize: 14),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      Container(
+                      SizedBox(
                         width: double.infinity,
                         child: LargeSubmitButton(
                             text: "CHECK SLOT",
@@ -123,7 +123,7 @@ class _DealerDetailsState extends State<DealerDetails> {
                                 builder: (context, child) {
                                   return Theme(
                                     data: Theme.of(context).copyWith(
-                                      colorScheme: ColorScheme.light(
+                                      colorScheme: const ColorScheme.light(
                                         primary: Color(0xffF2944E),
                                         onPrimary: Colors.white,
                                         shadow: Colors.cyan
@@ -165,11 +165,6 @@ class _DealerDetailsState extends State<DealerDetails> {
                                           // change the text color
                                           onSurface: Colors.black,
                                           background: Colors.transparent,
-
-                                          // background: Colors.orange,
-                                        // secondaryContainer: Colors.orange
-
-
                                         ),
 
                                         // button colors
@@ -185,13 +180,9 @@ class _DealerDetailsState extends State<DealerDetails> {
                                 );
                                 if(pickedTime != null ){
                                   print(pickedTime.format(context));
-                                  BookServiceModel.slotTime=pickedTime.format(context);//output 10:51 PM
-                                  DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                  //converting to DateTime so that we can further format on different pattern.
-                                  print(parsedTime); //output 1970-01-01 22:53:00.000
-                                  String formattedTime = DateFormat('HH:mm:ss').format(parsedTime);
-                                  print(formattedTime); //output 14:59:00
-                                  //DateFormat() is from intl package, you can format the time on any pattern you need.
+                                  BookServiceModel.slotTime=pickedTime.format(context);
+                                  print( BookServiceModel.slotTime);
+
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -200,7 +191,6 @@ class _DealerDetailsState extends State<DealerDetails> {
 
                                 }
                               } else {
-
 
                               }
                             }),

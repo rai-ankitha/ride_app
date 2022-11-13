@@ -6,7 +6,7 @@ import 'package:ride_app/model/workstation_model.dart';
 
 import '../constants.dart';
 import '../screens/book_service/workstation_details_screen.dart';
-import '../service/http.dart';
+
 
 class ServiceCard extends StatefulWidget {
   ServiceCard({required this.workstation, Key? key}) : super(key: key);
@@ -25,10 +25,6 @@ class _ServiceCardState extends State<ServiceCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-//       UserHttp.getWorkstationDetails(widget.workstation.dealerPhoneNumber!)
-//           .then((value) {
-// print(value);
-// dealerDetailsList.(WorkstationModel(id: value["_id"], dealerName: value["dealerName"], dealerCity: value["dealerCity"], dealerDescription: value["dealerDescription"], dealerPhoneNumber: value["dealerPhoneNumber"], dealerRating: value["dealerRating"], dealerImage: value["dealerImage"]));
         BookServiceModel.dealerName = widget.workstation.dealerName!;
         BookServiceModel.dealerCity = widget.workstation.dealerCity!;
         Navigator.push(

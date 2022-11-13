@@ -1,5 +1,3 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ride_app/model/book_service_model.dart';
@@ -156,7 +154,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
                     decoration: InputDecoration(
                       labelText: 'Vehicle type',
                       focusedBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey)),
+                          borderSide: BorderSide(color: Colors.grey),),
                       labelStyle: GoogleFonts.robotoFlex(
                           color: Color(0xff9F9F9F), fontSize: 18),
                     ),
@@ -170,7 +168,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
               decoration: InputDecoration(
                 labelText: 'Vehicle number',
                 focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)),
+                    borderSide: BorderSide(color: Colors.grey),),
                 labelStyle: GoogleFonts.robotoFlex(
                     color: Color(0xff9F9F9F), fontSize: 18),
               ),
@@ -182,7 +180,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
               icon: Image.asset("assets/drop_down.png", width: 10),
               decoration: InputDecoration(
                 focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)),
+                    borderSide: BorderSide(color: Colors.grey),),
                 labelText: 'Service Type',
                 labelStyle: GoogleFonts.roboto(
                     color: const Color(0xff9F9F9F), fontSize: 18),
@@ -251,7 +249,7 @@ class _ServiceBookingState extends State<ServiceBooking> {
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)),
+                      borderSide: BorderSide(color: Colors.grey),),
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 3,

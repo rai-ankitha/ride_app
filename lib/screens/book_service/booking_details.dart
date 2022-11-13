@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ride_app/screens/custom_padding.dart';
+import 'package:ride_app/screens/success_page.dart';
+import 'package:ride_app/service/http.dart';
 
 import '../../model/book_service_model.dart';
 import '../../widgets/large_submit_button.dart';
-import 'book_service.dart';
+import '../trip_navigation.dart';
+
 
 class ConfirmBookingDetails extends StatefulWidget {
   const ConfirmBookingDetails({Key? key}) : super(key: key);
@@ -47,9 +50,11 @@ class _ConfirmBookingDetailsState extends State<ConfirmBookingDetails> {
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(
-                  //         builder: (context) => ServiceBooking(prefill: details,)));
+                  //         builder: (context) => ServiceBooking(
+                  //               prefill: details,
+                  //             )));
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.edit,
                   color: Colors.white,
                 ))
@@ -63,26 +68,32 @@ class _ConfirmBookingDetailsState extends State<ConfirmBookingDetails> {
             if (e.key == 'Comments') {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [SizedBox(height: 20,),
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     e.key,
                     style: GoogleFonts.roboto(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff4F504F)),
+                        color: Color(0xff4F504F),),
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Text(e.value,
                       style: GoogleFonts.roboto(
-                          fontSize: 18, color: Color(0xff4F504F))),
-                  Divider(
-                    thickness: 1,color: Color(0xffB4B3B3),
+                          fontSize: 18, color: const Color(0xff4F504F),),),
+                  const Divider(
+                    thickness: 1,
+                    color: Color(0xffB4B3B3),
                   ),
                 ],
               );
             } else {
               return Column(children: [
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Row(
@@ -95,33 +106,55 @@ class _ConfirmBookingDetailsState extends State<ConfirmBookingDetails> {
                           style: GoogleFonts.roboto(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff4F504F)),
-                        )),
+                              color: Color(0xff4F504F),),
+                        ),),
                     Text(":"),
                     Container(
                       width: 150,
                       alignment: Alignment.centerRight,
                       child: Text(e.value,
                           style: GoogleFonts.roboto(
-                              fontSize: 18, color: Color(0xff4F504F))),
+                              fontSize: 18, color: Color(0xff4F504F),),),
                     ),
                   ],
                 ),
-                Divider(
-                  thickness: 1,color: Color(0xffB4B3B3),
+                const Divider(
+                  thickness: 1,
+                  color: Color(0xffB4B3B3),
                 ),
               ]);
             }
           }),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           SizedBox(
             width: double.infinity,
-            child: LargeSubmitButton(text: "BOOK", ontap: () {}),
+            child: LargeSubmitButton(
+                text: "BOOK",
+                ontap: () {
+                  UserHttp.uploadBookingDetails().then((value) =>
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SuccessPage(title: "Your booking has been confirmed")),),);
+                  clearBookingDetails();
+                }),
           ),
         ],
-      ).paddingAll(30, 30, 20, 20)),
+      ).paddingAll(30, 30, 20, 20),),
     );
+  }
+
+  clearBookingDetails() {
+    BookServiceModel.mobileNumber = "";
+    BookServiceModel.vehicleType = "";
+    BookServiceModel.vehicleNumber = "";
+    BookServiceModel.serviceType = "";
+    BookServiceModel.comments = "";
+    BookServiceModel.slotDate = "";
+    BookServiceModel.slotTime = "";
+    BookServiceModel.dealerName = "";
+    BookServiceModel.dealerCity = "";
   }
 }
